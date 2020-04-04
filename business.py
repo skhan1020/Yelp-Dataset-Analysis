@@ -1,6 +1,7 @@
 import requests
 import json
 import sqlite3
+import config
 
 conn = sqlite3.connect('businesses.db')
 cur = conn.cursor()
@@ -17,12 +18,11 @@ cur.executescript('''
             image_url TEXT) 
             ''')
 
-api_key = '7K8GNIVUcB3xHw2iO2bmvRWfrE0WauXm9Rke_9F-vDYzeP4bj1yBSjZYjAm2V1OsnV-YGc5FL9aZVr81g8EWOQUscGx3et1yFuu-c7UGhjL_pAkcaR1fwzb2SPFyXnYx'
+api_key =  config.yelp_api_key
 
 headers = {'Authorization': 'Bearer %s' % api_key}
 
 url = 'https://api.yelp.com/v3/businesses/search'
-# params = {'limit':50, 'offset':50, 'term': 'bars', 'location': 'new york city'}
 
 for offset in range(0, 1000, 50):
     params = {'limit': 50,
@@ -48,19 +48,6 @@ for offset in range(0, 1000, 50):
                 item['coordinates']['longitude'], item['review_count'],
                 item['image_url']))
 
-    # # print(item['id'])
-    # # print(item['name'])
-    # print(item['coordinates'])
-    # print(item['review_count'])
-    # print(item['image_url'])
-    # print(item.keys())
-    # print()
-    # print()
 
 conn.commit()
 
-
-
-# json_file = 'yelp_academic_dataset_business.json'
-# with open('yelp_academic_dataset_business.json') as f:
-    # js = json.loads(f.read())
