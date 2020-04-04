@@ -14,7 +14,7 @@ latitude_list = [float(x) for x in df['latitude'].values]
 longitude_list = [float(x) for  x in df['longitude'].values]
 
 map_options = GMapOptions(lat=40.7128, lng=-74.0060, map_type="roadmap", zoom=4)
-api_key = config.api_key 
+api_key = config.gmap_api_key 
 
 bokeh_plot = gmap(api_key, map_options, title='Business Locations')
 
