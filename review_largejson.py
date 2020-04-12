@@ -12,8 +12,6 @@ def get_text():
         data = list(map(json.loads, data))
 
     df = pd.DataFrame(data)
-        
-    # print(df.head())
 
     return df
 
