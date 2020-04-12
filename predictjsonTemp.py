@@ -2,10 +2,13 @@ import sqlite3
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import  LogisticRegression
 from sklearn.metrics import roc_curve, auc
+
+sns.set_style('darkgrid')
 
 def LogRegModel():
 
@@ -16,35 +19,49 @@ def LogRegModel():
 
     df['Sentiment'] = np.float64(df['Sentiment'])
 
-    #### Logistic Regression Model #####
 
     df1 = df.groupby(['business_id', 'name', 'latitude', 'longitude']).agg({'stars':'mean', 'useful':'mean', 'funny':'mean', 'cool':'mean', 'Sentiment':'mean'})
     
-    df1['Sentiment']  = np.where(df1['Sentiment'] > 0, 1, 0)
 
     pearson_corr_coeff = df1.corr(method='pearson').loc['stars', 'Sentiment']
     print("Stars and Sentiment Correlation Coefficient :", pearson_corr_coeff)
 
     df1['stars'].hist(bins=100, range=[min(df['stars'].values), max(df['stars'].values)], figsize=(8,6))
+    plt.xlabel('x')
+    plt.ylabel('stars')
+    plt.title('Histogram of stars')
     plt.show()
 
     pearson_corr_coeff = df1.corr(method='pearson').loc['useful', 'Sentiment']
     print("Useful and Sentiment Correlation Coefficient :", pearson_corr_coeff)
 
     df1['useful'].hist(bins=100, range=[min(df['useful'].values), max(df['useful'].values)], figsize=(8,6))
+    plt.xlabel('x')
+    plt.ylabel('useful')
+    plt.title('Histogram of useful')
     plt.show()
 
     df1['funny'].hist(bins=100, range=[min(df['funny'].values), max(df['funny'].values)], figsize=(8,6))
+    plt.xlabel('x')
+    plt.ylabel('funny')
+    plt.title('Histogram of funny')
     plt.show()
 
     pearson_corr_coeff = df1.corr(method='pearson').loc['cool', 'Sentiment']
     print("Cool and Sentiment Correlation Coefficient :", pearson_corr_coeff)
 
     df1['cool'].hist(bins=100, range=[min(df['cool'].values), max(df['cool'].values)], figsize=(8,6))
+    plt.xlabel('x')
+    plt.ylabel('cool')
+    plt.title('Histogram of cool')
     plt.show()
 
 
+    df1['Sentiment']  = np.where(df1['Sentiment'] > 0, 1, 0)
     df1['Sentiment'].hist(bins=100, range=[min(df['Sentiment'].values), max(df['Sentiment'].values)], figsize=(8,6))
+    plt.xlabel('x')
+    plt.ylabel('Sentiment')
+    plt.title('Histogram of Sentiment')
     plt.show()
 
     features  =  df1[['stars']]
@@ -54,6 +71,8 @@ def LogRegModel():
     scaler  = MinMaxScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.fit_transform(X_test)
+
+    #### Logistic Regression Model #####
 
     for i, this_C in  enumerate([0.1, 1.0, 10.0]):
         clf = LogisticRegression(C=this_C).fit(X_train_scaled, y_train)
