@@ -11,12 +11,12 @@ def extract_reviews():
 
     headers = {'Authorization': 'Bearer %s' % api_key}
 
-    conn = sqlite3.connect('businesses.db')
+    conn = sqlite3.connect('yelp.db')
     cur = conn.cursor()
 
 
-    cur.execute(''' Drop Table If Exists Review ''')
-    cur.execute(''' Select business_id From Business''')
+    cur.execute(''' Drop Table If Exists Review_API ''')
+    cur.execute(''' Select business_id From Business_API''')
 
     data = list()
     for row in cur:
@@ -41,9 +41,9 @@ def extract_reviews():
 
 def insert_reviews():
 
-    engine = create_engine('sqlite:///businesses.db', echo=False)
+    engine = create_engine('sqlite:///yelp.db', echo=False)
     df = extract_reviews()
-    df.to_sql('Review', con=engine, if_exists='append')
+    df.to_sql('Review_API', con=engine, if_exists='append')
 
 if __name__ == '__main__':
 
