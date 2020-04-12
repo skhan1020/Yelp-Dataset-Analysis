@@ -19,12 +19,35 @@ def LogRegModel():
     #### Logistic Regression Model #####
 
     df1 = df.groupby(['business_id', 'name', 'latitude', 'longitude']).agg({'stars':'mean', 'useful':'mean', 'funny':'mean', 'cool':'mean', 'Sentiment':'mean'})
+    
     df1['Sentiment']  = np.where(df1['Sentiment'] > 0, 1, 0)
+
+    pearson_corr_coeff = df1.corr(method='pearson').loc['stars', 'Sentiment']
+    print("Stars and Sentiment Correlation Coefficient :", pearson_corr_coeff)
+
+    df1['stars'].hist(bins=100, range=[min(df['stars'].values), max(df['stars'].values)], figsize=(8,6))
+    plt.show()
+
+    pearson_corr_coeff = df1.corr(method='pearson').loc['useful', 'Sentiment']
+    print("Useful and Sentiment Correlation Coefficient :", pearson_corr_coeff)
+
+    df1['useful'].hist(bins=100, range=[min(df['useful'].values), max(df['useful'].values)], figsize=(8,6))
+    plt.show()
+
+    df1['funny'].hist(bins=100, range=[min(df['funny'].values), max(df['funny'].values)], figsize=(8,6))
+    plt.show()
+
+    pearson_corr_coeff = df1.corr(method='pearson').loc['cool', 'Sentiment']
+    print("Cool and Sentiment Correlation Coefficient :", pearson_corr_coeff)
+
+    df1['cool'].hist(bins=100, range=[min(df['cool'].values), max(df['cool'].values)], figsize=(8,6))
+    plt.show()
+
 
     df1['Sentiment'].hist(bins=100, range=[min(df['Sentiment'].values), max(df['Sentiment'].values)], figsize=(8,6))
     plt.show()
 
-    features  =  df1[['stars', 'useful', 'funny', 'cool']]
+    features  =  df1[['stars']]
     sentiment = df1['Sentiment']
 
     X_train,  X_test, y_train, y_test =  train_test_split(features, sentiment, random_state=0)
