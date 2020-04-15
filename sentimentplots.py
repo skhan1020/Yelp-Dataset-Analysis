@@ -1,4 +1,4 @@
-from bokeh.io import output_file, show
+from bokeh.io import output_file, show, export_png
 from bokeh.models import (ColumnDataSource, GMapOptions, HoverTool, PanTool, WheelZoomTool, BoxSelectTool, BoxZoomTool)
 from bokeh.plotting import gmap
 import config
@@ -38,6 +38,7 @@ def makeplot():
 
     bokeh_plot.circle(x="lon", y="lat", size=4, color='color', legend_field='legend', fill_alpha=0.8, source=source)
     output_file('sentimentmap.html')
+    export_png(bokeh_plot, filename="Figures/sentimentmap.png")
     show(bokeh_plot)
 
     conn.commit()

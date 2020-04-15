@@ -2,7 +2,7 @@ import pandas as pd
 import  sqlite3
 import sqlalchemy
 import numpy as np
-from bokeh.io import output_file, show
+from bokeh.io import output_file, show, export_png
 from bokeh.models import (ColumnDataSource, GMapOptions, HoverTool, PanTool, WheelZoomTool, BoxSelectTool, BoxZoomTool)
 from bokeh.plotting import gmap
 from  bokeh.palettes import brewer
@@ -68,6 +68,8 @@ def plot(df, palette, filename):
             line_color="colors", line_width=2, line_alpha=0.3, 
             fill_alpha=0.8, source=source)
     output_file(filename)
+    png_file = 'Figures/' + filename.split('.')[0] + '.png' 
+    export_png(bokeh_plot, filename=png_file)
     show(bokeh_plot)
 
 
